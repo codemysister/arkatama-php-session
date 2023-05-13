@@ -1,7 +1,12 @@
 <?php
+session_start();
 
 require_once 'koneksi.php';
 require_once 'function.php';
+
+if(!isset($_SESSION['is_login']) && !$_SESSION['is_login']){
+    header('Location: login.php');
+}
 
 $query = "SELECT users.*, roles.name as role
 FROM users
@@ -55,6 +60,11 @@ function deleteUser($id){
 
 if(isset($_GET['delete'])){
     deleteUser($_GET['delete']);
+}
+
+if(isset($_POST['logout'])){
+    session_destroy();
+    header("Location: login.php");
 }
 ?>
 
@@ -208,6 +218,8 @@ if(isset($_GET['delete'])){
       
    </div>
 </div>
+
+<?php include 'logout.php';?>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.js"></script>
 </body>

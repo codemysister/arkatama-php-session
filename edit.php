@@ -1,7 +1,12 @@
 <?php
+session_start();
 
 require_once 'koneksi.php';
 require_once 'function.php';
+
+if(!isset($_SESSION['is_login']) && !$_SESSION['is_login']){
+    header('Location: login.php');
+}
 
 $user_id = $_GET['id'];
 
@@ -41,6 +46,12 @@ if(isset($_POST['submit'])){
     $address = $_POST['address'];
     editUser($user_id, $name, $role, $password, $email, $phone, $address);
 }
+
+if(isset($_POST['logout'])){
+    session_destroy();
+    header("Location: login.php");
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -114,6 +125,8 @@ if(isset($_POST['submit'])){
       
    </div>
 </div>
+
+<?php include 'logout.php';?>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.js"></script>
 </body>

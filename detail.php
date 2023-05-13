@@ -1,11 +1,15 @@
 <?php
 
+session_start();
+
 require_once 'koneksi.php';
 require_once 'function.php';
 
+if(!isset($_SESSION['is_login']) && !$_SESSION['is_login']){
+    header('Location: login.php');
+}
+
 $user_id = $_GET['view'];
-
-
 
 $label = ['name', 'role', 'email', 'address', 'phone'];
 $result = mysqli_fetch_row(getUserDetail($user_id));
@@ -17,7 +21,10 @@ for($i = 0; $i < count($result) - 3; $i++){
 }
 
 
-
+if(isset($_POST['logout'])){
+    session_destroy();
+    header("Location: login.php");
+}
 ?>
 
 <!DOCTYPE html>
@@ -39,7 +46,7 @@ for($i = 0; $i < count($result) - 3; $i++){
     
    <h1 class="text-3xl font-bold text-center mb-8 ">Detail Users</h1>
    <div class="h-screen">
-    <div class="flex mx-auto justify-center mt-20 w-[80%] h-[80%] gap-4">
+    <div class="flex mx-auto justify-center mt-20 w-[80%] h-[80%] gap-4 mb-5">
         <div class="w-[35%]">
             <img class="h-full h-44 w-64 rounded-md" src="<?=$result[count($result)-3]?>" alt="">
         </div>
@@ -74,10 +81,12 @@ for($i = 0; $i < count($result) - 3; $i++){
             </div>       
         </div>
     </div>
+    <?php include 'logout.php';?>
     </div>
-      
-   </div>
+   
 </div>
+</div>
+
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.js"></script>
 </body>
